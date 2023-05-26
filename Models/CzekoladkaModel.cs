@@ -6,7 +6,7 @@ namespace MvcPracownik.Models
     {
         [Key]
         [Display(Name = "idczekoladki")]
-        public int id { get; set; }
+        public int idczekoladki { get; set; }
         [Display(Name = "nazwa")]
         public String nazwa { get; set; }
 
