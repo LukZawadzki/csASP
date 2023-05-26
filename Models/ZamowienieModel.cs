@@ -10,5 +10,6 @@ namespace MvcPracownik.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime datarealizacji { get; set; }
         public Klient? klient { get; set; }
+        public ICollection<Artykul>? artykuly { get; set; }
     }
 }
