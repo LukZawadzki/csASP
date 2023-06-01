@@ -22,14 +22,20 @@ namespace csASP.Controllers
         // GET: Zawartosc
         public async Task<IActionResult> Index()
         {
-              return _context.Zawartosc != null ? 
-                          View(await _context.Zawartosc.ToListAsync()) :
-                          Problem("Entity set 'BazaContext.Zawartosc'  is null.");
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
+            return _context.Zawartosc != null ? 
+                        View(await _context.Zawartosc.ToListAsync()) :
+                        Problem("Entity set 'BazaContext.Zawartosc'  is null.");
         }
 
         // GET: Zawartosc/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Zawartosc == null)
             {
                 return NotFound();
@@ -48,6 +54,9 @@ namespace csASP.Controllers
         // GET: Zawartosc/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             return View();
         }
 
@@ -58,6 +67,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idzawartosci,sztuk,idpudelka,idczekoladki")] Zawartosc zawartosc)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (ModelState.IsValid)
             {
                 _context.Add(zawartosc);
@@ -70,6 +82,9 @@ namespace csASP.Controllers
         // GET: Zawartosc/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Zawartosc == null)
             {
                 return NotFound();
@@ -90,7 +105,10 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("idzawartosci,sztuk,idpudelka,idczekoladki")] Zawartosc zawartosc)
         {
-            if (id != zawartosc.idzawartosci)
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
+            if (id != zawartosc.idczekoladki)
             {
                 return NotFound();
             }
@@ -121,6 +139,9 @@ namespace csASP.Controllers
         // GET: Zawartosc/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Zawartosc == null)
             {
                 return NotFound();
@@ -141,6 +162,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (_context.Zawartosc == null)
             {
                 return Problem("Entity set 'BazaContext.Zawartosc'  is null.");

@@ -22,14 +22,20 @@ namespace csASP.Controllers
         // GET: Zamowienia
         public async Task<IActionResult> Index()
         {
-              return _context.Zamowienie != null ? 
-                          View(await _context.Zamowienie.ToListAsync()) :
-                          Problem("Entity set 'BazaContext.Zamowienie'  is null.");
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
+            return _context.Zamowienie != null ? 
+                        View(await _context.Zamowienie.ToListAsync()) :
+                        Problem("Entity set 'BazaContext.Zamowienie'  is null.");
         }
 
         // GET: Zamowienia/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Zamowienie == null)
             {
                 return NotFound();
@@ -48,6 +54,9 @@ namespace csASP.Controllers
         // GET: Zamowienia/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             return View();
         }
 
@@ -58,6 +67,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idzamowienia,datarealizacji,idklienta")] Zamowienie zamowienie)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (ModelState.IsValid)
             {
                 _context.Add(zamowienie);
@@ -70,6 +82,9 @@ namespace csASP.Controllers
         // GET: Zamowienia/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Zamowienie == null)
             {
                 return NotFound();
@@ -90,6 +105,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("idzamowienia,datarealizacji,idklienta")] Zamowienie zamowienie)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id != zamowienie.idzamowienia)
             {
                 return NotFound();
@@ -121,6 +139,9 @@ namespace csASP.Controllers
         // GET: Zamowienia/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Zamowienie == null)
             {
                 return NotFound();
@@ -133,6 +154,12 @@ namespace csASP.Controllers
                 return NotFound();
             }
 
+            var artykuly = _context.Artykul.Any(a => a.idzamowienia == zamowienie.idzamowienia);
+            if(artykuly){
+                ModelState.AddModelError(string.Empty, "Nie można usunąć zamówienia, ponieważ istnieją powiązane dane.");
+                return RedirectToAction("Index");
+            }
+
             return View(zamowienie);
         }
 
@@ -141,6 +168,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (_context.Zamowienie == null)
             {
                 return Problem("Entity set 'BazaContext.Zamowienie'  is null.");
@@ -151,6 +181,12 @@ namespace csASP.Controllers
                 _context.Zamowienie.Remove(zamowienie);
             }
             
+            var artykuly = _context.Artykul.Any(a => a.idzamowienia == zamowienie.idzamowienia);
+            if(artykuly){
+                ModelState.AddModelError(string.Empty, "Nie można usunąć zamówienia, ponieważ istnieją powiązane dane.");
+                return RedirectToAction("Index");
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
