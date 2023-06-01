@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema; 
 
 namespace MvcPracownik.Models
 {
+    [Table("czekoladki")]
     public class Czekoladka
     {
         [Key]
         [Display(Name = "idczekoladki")]
-        public int idczekoladki { get; set; }
+        public String idczekoladki { get; set; }
         [Display(Name = "nazwa")]
         public String nazwa { get; set; }
 
@@ -22,10 +24,10 @@ namespace MvcPracownik.Models
         [Display(Name = "opis")]
         public String opis { get; set; }
         [Display(Name = "koszt")]
-        public decimal koszt { get; set; }
+        public float koszt { get; set; }
 
         [Display(Name = "masa")]
-        public decimal masa { get; set; }
+        public float masa { get; set; }
 
         public ICollection<Zawartosc> ?zawartosci {get; set;}
     }
