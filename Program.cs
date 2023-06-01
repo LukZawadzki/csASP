@@ -57,7 +57,7 @@ InitDatabase();
 
 void InitCukiernia(){
     var connectionBuilder = new SqliteConnectionStringBuilder();
-    connectionBuilder.DataSource = "Cukiernia.db";
+    connectionBuilder.DataSource = "BazaContext-d5968e29-eef9-4b0e-989f-c52d0e06bd95.db";
 
     var connection = new SqliteConnection(connectionBuilder.ConnectionString);
     connection.Open();
