@@ -15,5 +15,8 @@ namespace MvcPracownik.Models
         public decimal cena { get; set; }
         [Display(Name = "stan")]
         public int stan { get; set; }
+
+        public ICollection<Zawartosc> ?zawartosci {get; set;}
+        public ICollection<Artykul> ?artykuly {get; set;}
     }
 }

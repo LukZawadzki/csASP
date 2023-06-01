@@ -26,5 +26,7 @@ namespace MvcPracownik.Models
 
         [Display(Name = "masa")]
         public decimal masa { get; set; }
+
+        public ICollection<Zawartosc> ?zawartosci {get; set;}
     }
 }

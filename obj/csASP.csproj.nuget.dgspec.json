@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Łukasz\\Desktop\\C#\\Lab11\\csASP\\csASP.csproj": {}
+    "C:\\Users\\LZ\\Desktop\\C#\\csASP\\csASP.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Łukasz\\Desktop\\C#\\Lab11\\csASP\\csASP.csproj": {
+    "C:\\Users\\LZ\\Desktop\\C#\\csASP\\csASP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Łukasz\\Desktop\\C#\\Lab11\\csASP\\csASP.csproj",
+        "projectUniqueName": "C:\\Users\\LZ\\Desktop\\C#\\csASP\\csASP.csproj",
         "projectName": "csASP",
-        "projectPath": "C:\\Users\\Łukasz\\Desktop\\C#\\Lab11\\csASP\\csASP.csproj",
-        "packagesPath": "C:\\Users\\Łukasz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Łukasz\\Desktop\\C#\\Lab11\\csASP\\obj\\",
+        "projectPath": "C:\\Users\\LZ\\Desktop\\C#\\csASP\\csASP.csproj",
+        "packagesPath": "C:\\Users\\LZ\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\LZ\\Desktop\\C#\\csASP\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Łukasz\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\LZ\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
