@@ -133,7 +133,7 @@ namespace csASP.Controllers
                 return NotFound();
             }
             
-            var zawartosc = _context.Artykul.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
+            var zawartosc = _context.Zawartosc.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
             if(zawartosc){
                 ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
                 return RedirectToAction("Index");
@@ -157,7 +157,7 @@ namespace csASP.Controllers
                 _context.Czekoladka.Remove(czekoladka);
             }
             
-            var zawartosc = _context.Artykul.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
+            var zawartosc = _context.Zawartosc.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
             if(zawartosc){
                 ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
                 return RedirectToAction("Index");
