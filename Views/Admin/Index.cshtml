@@ -1,9 +1,17 @@
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
 <div class="d-flex flex-column justify-content-center align-items-center">
     <h1 class="display-4">Welcome to the admin panel!</h1>
     @if (Context.Session.GetString("ADD_USER_STATUS") == "USERNAME_EXISTS") {
-        <p>This username is already taken!</p>
+        <div class="alert alert-danger" role="alert">
+            This username is already taken!
+        </div>
     } else if (Context.Session.GetString("ADD_USER_STATUS") == "SUCCESS") {
-        <p>Successfully added the user!</p>
+        <div class="alert alert-success" role="alert">
+            Successfully added the user!
+        </div>
     }
     <table>
         <tr>

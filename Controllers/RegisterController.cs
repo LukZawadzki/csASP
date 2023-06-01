@@ -15,12 +15,18 @@ public class RegisterController : Controller
 
     public IActionResult Index()
     {
+        if (HttpContext.Session.GetString("USER_STATUS") == "LOGGED_IN")
+            return RedirectToAction(actionName: "Index", controllerName: "Login");
+
         return View();
     }
 
     [HttpPost] 
     public IActionResult HandleRegisterForm(IFormCollection form)
     {
+        if (HttpContext.Session.GetString("USER_STATUS") == "LOGGED_IN")
+            return RedirectToAction(actionName: "Index", controllerName: "Login");
+
         string username = form["username"].ToString();
         string password = form["password"].ToString();
         string password_confirm = form["password_confirm"].ToString();

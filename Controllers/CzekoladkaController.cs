@@ -22,14 +22,20 @@ namespace csASP.Controllers
         // GET: Czekoladka
         public async Task<IActionResult> Index()
         {
-              return _context.Czekoladka != null ? 
-                          View(await _context.Czekoladka.ToListAsync()) :
-                          Problem("Entity set 'BazaContext.Czekoladka'  is null.");
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+            
+            return _context.Czekoladka != null ? 
+                        View(await _context.Czekoladka.ToListAsync()) :
+                        Problem("Entity set 'BazaContext.Czekoladka'  is null.");
         }
 
         // GET: Czekoladka/Details/5
         public async Task<IActionResult> Details(string id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Czekoladka == null)
             {
                 return NotFound();
@@ -48,6 +54,9 @@ namespace csASP.Controllers
         // GET: Czekoladka/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             return View();
         }
 
@@ -58,6 +67,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idczekoladki,nazwa,czekolada,orzechy,nadzienie,opis,koszt,masa")] Czekoladka czekoladka)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (ModelState.IsValid)
             {
                 _context.Add(czekoladka);
@@ -70,6 +82,9 @@ namespace csASP.Controllers
         // GET: Czekoladka/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Czekoladka == null)
             {
                 return NotFound();
@@ -90,6 +105,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("idczekoladki,nazwa,czekolada,orzechy,nadzienie,opis,koszt,masa")] Czekoladka czekoladka)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id != czekoladka.idczekoladki)
             {
                 return NotFound();
@@ -121,6 +139,9 @@ namespace csASP.Controllers
         // GET: Czekoladka/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (id == null || _context.Czekoladka == null)
             {
                 return NotFound();
@@ -147,6 +168,9 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
             if (_context.Czekoladka == null)
             {
                 return Problem("Entity set 'BazaContext.Czekoladka'  is null.");

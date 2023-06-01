@@ -1,9 +1,17 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
 <div class="d-flex flex-column justify-content-center align-items-center">
     @if (Context.Session.GetString("USER_STATUS") == "PASSWORD_MISMATCH") {
-        <p>Passwords don't match!</p>
+        <div class="alert alert-danger" role="alert">
+            Passwords don't match!
+        </div>
     }
     @if (Context.Session.GetString("USER_STATUS") == "USERNAME_EXISTS") {
-        <p>This username is already taken!</p>
+        <div class="alert alert-danger" role="alert">
+            This username is already taken!
+        </div>
     }
     <form asp-action="HandleRegisterForm">
         <label for="username">Username</label>
