@@ -18,6 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.idzamowienia)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idpudelka)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -31,9 +34,12 @@
                 @Html.DisplayFor(modelItem => item.idzamowienia)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.idpudelka">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.idpudelka">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.idpudelka">Delete</a>
+                @Html.DisplayFor(modelItem => item.idpudelka)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.idartykulu">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.idartykulu">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.idartykulu">Delete</a>
             </td>
         </tr>
 }

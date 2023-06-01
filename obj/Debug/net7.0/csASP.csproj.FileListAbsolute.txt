@@ -604,3 +604,4 @@ C:\Users\LZ\Desktop\C#\csASP\obj\Debug\net7.0\refint\csASP.dll
 C:\Users\LZ\Desktop\C#\csASP\obj\Debug\net7.0\csASP.pdb
 C:\Users\LZ\Desktop\C#\csASP\obj\Debug\net7.0\csASP.genruntimeconfig.cache
 C:\Users\LZ\Desktop\C#\csASP\obj\Debug\net7.0\ref\csASP.dll
+C:\Users\LZ\Desktop\C#\csASP\obj\Debug\net7.0\scopedcss\Views\Admin\Index.cshtml.rz.scp.css

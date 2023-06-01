@@ -1,3 +1,13 @@
+/* _content/csASP/Views/Admin/Index.cshtml.rz.scp.css */
+td[b-imtzkf5g0l], th[b-imtzkf5g0l] {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+  
+tr:nth-child(even)[b-imtzkf5g0l] {
+    background-color: #eeeeee;
+}
 /* _content/csASP/Views/Shared/_Layout.cshtml.rz.scp.css */
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
