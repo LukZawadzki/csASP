@@ -1,0 +1,31 @@
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <h1 class="display-4">Welcome to the admin panel!</h1>
+    @if (Context.Session.GetString("ADD_USER_STATUS") == "USERNAME_EXISTS") {
+        <p>This username is already taken!</p>
+    } else if (Context.Session.GetString("ADD_USER_STATUS") == "SUCCESS") {
+        <p>Successfully added the user!</p>
+    }
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Password Hash</th>
+            <th>Admin</th>
+            <th>Token</th>
+        </tr>
+        @foreach(DBUser user in ViewData["users"] as List<DBUser>) {
+            <tr>
+                <td>@user.username</td>
+                <td>@user.passwordHash</td>
+                <td>@user.isAdmin</td>
+                <td>@user.token</td>
+            </tr>
+        }
+    </table>
+    <form asp-action="HandleAddUserForm">
+        <label for="username">Username</label>
+            <input name="username" id="username" class="form-control" />
+            <label for="password">Password</label>
+            <input name="password" id="password" class="form-control" type="password" />
+            <input type="submit" value="Add User" class="btn btn-primary mt-2" />
+    </form>
+</div>

@@ -1,7 +1,56 @@
+using Microsoft.Data.Sqlite;
+using System.Security.Cryptography;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(600);
+    options.Cookie.HttpOnly = true; //plik cookie jest niedostępny przez skrypt po stronie klienta
+    options.Cookie.IsEssential = true; //pliki cookie sesji będą zapisywane dzięki czemu sesje będzie mogła być śledzona podczas nawigacji lub przeładowania strony
+});
+
+void InitDatabase() {
+    var connectionBuilder = new SqliteConnectionStringBuilder();
+    connectionBuilder.DataSource = "database.db";
+
+    using (var connection = new SqliteConnection(connectionBuilder.ConnectionString)) {
+        connection.Open();
+        SqliteCommand createTableCmd = connection.CreateCommand();
+        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL, is_admin BOOLEAN NOT NULL, token TEXT NOT NULL)";
+        createTableCmd.ExecuteNonQuery();
+
+        SqliteCommand selectCmd = connection.CreateCommand();
+        selectCmd.CommandText = "SELECT * FROM users";
+
+        bool hasData = false;
+        using (SqliteDataReader reader = selectCmd.ExecuteReader()) {
+            while (reader.Read()) {
+                hasData = true;
+                break;
+            }
+        }
+
+        Console.WriteLine(hasData);
+
+        if (hasData)
+            return;
+        
+        SqliteCommand insertCmd = connection.CreateCommand();
+        string adminToken = Utils.GetMD5Hash("adminadmin" + Utils.GetTimestampString());
+        string userToken = Utils.GetMD5Hash("useruser" + Utils.GetTimestampString());
+        insertCmd.CommandText = $"INSERT INTO users VALUES ('admin', '{Utils.GetMD5Hash("admin")}', TRUE, '{adminToken}'), ('user', '{Utils.GetMD5Hash("user")}', FALSE, '{userToken}')";
+        insertCmd.ExecuteNonQuery();
+    }
+}
+
+InitDatabase();
 
 var app = builder.Build();
 
@@ -20,8 +69,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,0 +1,24 @@
+<div class="d-flex flex-column justify-content-center align-items-center">
+    @if (Context.Session.GetString("USER_STATUS") == "LOGGED_IN") {
+        <p>Welcome @Context.Session.GetString("LOGGED_USER_USERNAME")!</p>
+        <p>You are @(Context.Session.GetString("LOGGED_USER_IS_ADMIN") == "True" ? "" : "not ")an administrator</p>
+        <p>Your token is: @Context.Session.GetString("LOGGED_USER_TOKEN")</p>
+        <form asp-action="HandleLogoutForm">
+            <input type="submit" value="Logout" class="btn btn-primary" />
+        </form>
+    } else {
+        @if (Context.Session.GetString("USER_STATUS") == "INVALID_CREDENTIALS") {
+            <p>Invalid login or password!</p>
+        } else if (Context.Session.GetString("USER_STATUS") == "REGISTERED") {
+            <p>Thank you for registering!</p>
+        }
+        <form asp-action="HandleLoginForm">
+            <label for="username">Username</label>
+            <input name="username" id="username" class="form-control" />
+            <label for="password">Password</label>
+            <input name="password" id="password" class="form-control" type="password" />
+            <input type="submit" value="Login" class="btn btn-primary mt-2" />
+        </form>
+        <p>Don't have an account? <a asp-controller="Register" asp-action="Index">Register!</a></p>
+    }
+</div>
