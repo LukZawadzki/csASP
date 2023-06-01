@@ -22,20 +22,14 @@ namespace csASP.Controllers
         // GET: Pudelka
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
-            return _context.Pudelko != null ? 
-                        View(await _context.Pudelko.ToListAsync()) :
-                        Problem("Entity set 'BazaContext.Pudelko'  is null.");
+              return _context.Pudelko != null ? 
+                          View(await _context.Pudelko.ToListAsync()) :
+                          Problem("Entity set 'BazaContext.Pudelko'  is null.");
         }
 
         // GET: Pudelka/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Pudelko == null)
             {
                 return NotFound();
@@ -54,9 +48,6 @@ namespace csASP.Controllers
         // GET: Pudelka/Create
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-            
             return View();
         }
 
@@ -67,9 +58,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idpudelka,nazwa,opis,cena,stan")] Pudelko pudelko)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (ModelState.IsValid)
             {
                 _context.Add(pudelko);
@@ -82,9 +70,6 @@ namespace csASP.Controllers
         // GET: Pudelka/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Pudelko == null)
             {
                 return NotFound();
@@ -105,9 +90,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("idpudelka,nazwa,opis,cena,stan")] Pudelko pudelko)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id != pudelko.idpudelka)
             {
                 return NotFound();
@@ -139,9 +121,6 @@ namespace csASP.Controllers
         // GET: Pudelka/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Pudelko == null)
             {
                 return NotFound();
@@ -154,13 +133,6 @@ namespace csASP.Controllers
                 return NotFound();
             }
 
-            var artykuly = _context.Artykul.Any(a => a.idpudelka.Equals(pudelko.idpudelka));
-            var zawartosci = _context.Zawartosc.Any(z => z.idpudelka.Equals(pudelko.idpudelka));
-            if(artykuly || zawartosci){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć pudełka, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
-            }
-
             return View(pudelko);
         }
 
@@ -169,9 +141,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (_context.Pudelko == null)
             {
                 return Problem("Entity set 'BazaContext.Pudelko'  is null.");
@@ -182,13 +151,6 @@ namespace csASP.Controllers
                 _context.Pudelko.Remove(pudelko);
             }
             
-            var artykuly = _context.Artykul.Any(a => a.idpudelka.Equals(pudelko.idpudelka));
-            var zawartosci = _context.Zawartosc.Any(z => z.idpudelka.Equals(pudelko.idpudelka));
-            if(artykuly || zawartosci){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć pudełka, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
-            }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

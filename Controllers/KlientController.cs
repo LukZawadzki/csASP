@@ -22,20 +22,14 @@ namespace csASP.Controllers
         // GET: Klient
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
-            return _context.Klient != null ? 
-                        View(await _context.Klient.ToListAsync()) :
-                        Problem("Entity set 'BazaContext.Klient'  is null.");
+              return _context.Klient != null ? 
+                          View(await _context.Klient.ToListAsync()) :
+                          Problem("Entity set 'BazaContext.Klient'  is null.");
         }
 
         // GET: Klient/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Klient == null)
             {
                 return NotFound();
@@ -54,9 +48,6 @@ namespace csASP.Controllers
         // GET: Klient/Create
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             return View();
         }
 
@@ -67,9 +58,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idklienta,nazwa,ulica,miejscowosc,kod,telefon")] Klient klient)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (ModelState.IsValid)
             {
                 _context.Add(klient);
@@ -82,9 +70,6 @@ namespace csASP.Controllers
         // GET: Klient/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Klient == null)
             {
                 return NotFound();
@@ -105,9 +90,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("idklienta,nazwa,ulica,miejscowosc,kod,telefon")] Klient klient)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id != klient.idklienta)
             {
                 return NotFound();
@@ -139,9 +121,6 @@ namespace csASP.Controllers
         // GET: Klient/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Klient == null)
             {
                 return NotFound();
@@ -154,12 +133,6 @@ namespace csASP.Controllers
                 return NotFound();
             }
 
-            var zamowienia = _context.Zamowienie.Any(z => z.idklienta == klient.idklienta);
-            if(zamowienia){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć klienta, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
-            }
-
             return View(klient);
         }
 
@@ -168,9 +141,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (_context.Klient == null)
             {
                 return Problem("Entity set 'BazaContext.Klient'  is null.");
@@ -181,12 +151,6 @@ namespace csASP.Controllers
                 _context.Klient.Remove(klient);
             }
             
-            var zamowienia = _context.Zamowienie.Any(z => z.idklienta == klient.idklienta);
-            if(zamowienia){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć klienta, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
-            }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

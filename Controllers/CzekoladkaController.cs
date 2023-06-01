@@ -22,20 +22,14 @@ namespace csASP.Controllers
         // GET: Czekoladka
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-            
-            return _context.Czekoladka != null ? 
-                        View(await _context.Czekoladka.ToListAsync()) :
-                        Problem("Entity set 'BazaContext.Czekoladka'  is null.");
+              return _context.Czekoladka != null ? 
+                          View(await _context.Czekoladka.ToListAsync()) :
+                          Problem("Entity set 'BazaContext.Czekoladka'  is null.");
         }
 
         // GET: Czekoladka/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Czekoladka == null)
             {
                 return NotFound();
@@ -54,9 +48,6 @@ namespace csASP.Controllers
         // GET: Czekoladka/Create
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             return View();
         }
 
@@ -67,9 +58,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("idczekoladki,nazwa,czekolada,orzechy,nadzienie,opis,koszt,masa")] Czekoladka czekoladka)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (ModelState.IsValid)
             {
                 _context.Add(czekoladka);
@@ -82,9 +70,6 @@ namespace csASP.Controllers
         // GET: Czekoladka/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Czekoladka == null)
             {
                 return NotFound();
@@ -105,9 +90,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("idczekoladki,nazwa,czekolada,orzechy,nadzienie,opis,koszt,masa")] Czekoladka czekoladka)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id != czekoladka.idczekoladki)
             {
                 return NotFound();
@@ -139,9 +121,6 @@ namespace csASP.Controllers
         // GET: Czekoladka/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Czekoladka == null)
             {
                 return NotFound();
@@ -153,12 +132,6 @@ namespace csASP.Controllers
             {
                 return NotFound();
             }
-            
-            var zawartosc = _context.Zawartosc.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
-            if(zawartosc){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
-            }
 
             return View(czekoladka);
         }
@@ -168,9 +141,6 @@ namespace csASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (_context.Czekoladka == null)
             {
                 return Problem("Entity set 'BazaContext.Czekoladka'  is null.");
@@ -181,12 +151,6 @@ namespace csASP.Controllers
                 _context.Czekoladka.Remove(czekoladka);
             }
             
-            var zawartosc = _context.Zawartosc.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
-            if(zawartosc){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
-            }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

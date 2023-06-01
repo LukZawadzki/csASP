@@ -22,27 +22,21 @@ namespace csASP.Controllers
         // GET: Zawartosc
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
-            return _context.Zawartosc != null ? 
-                        View(await _context.Zawartosc.ToListAsync()) :
-                        Problem("Entity set 'BazaContext.Zawartosc'  is null.");
+              return _context.Zawartosc != null ? 
+                          View(await _context.Zawartosc.ToListAsync()) :
+                          Problem("Entity set 'BazaContext.Zawartosc'  is null.");
         }
 
         // GET: Zawartosc/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Zawartosc == null)
             {
                 return NotFound();
             }
 
             var zawartosc = await _context.Zawartosc
-                .FirstOrDefaultAsync(m => m.idczekoladki == id);
+                .FirstOrDefaultAsync(m => m.idzawartosci == id);
             if (zawartosc == null)
             {
                 return NotFound();
@@ -54,9 +48,6 @@ namespace csASP.Controllers
         // GET: Zawartosc/Create
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             return View();
         }
 
@@ -65,11 +56,8 @@ namespace csASP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("sztuk,idpudelka,idczekoladki")] Zawartosc zawartosc)
+        public async Task<IActionResult> Create([Bind("idzawartosci,sztuk,idpudelka,idczekoladki")] Zawartosc zawartosc)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (ModelState.IsValid)
             {
                 _context.Add(zawartosc);
@@ -80,11 +68,8 @@ namespace csASP.Controllers
         }
 
         // GET: Zawartosc/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Zawartosc == null)
             {
                 return NotFound();
@@ -103,12 +88,9 @@ namespace csASP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("sztuk,idpudelka,idczekoladki")] Zawartosc zawartosc)
+        public async Task<IActionResult> Edit(int id, [Bind("idzawartosci,sztuk,idpudelka,idczekoladki")] Zawartosc zawartosc)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
-            if (id != zawartosc.idczekoladki)
+            if (id != zawartosc.idzawartosci)
             {
                 return NotFound();
             }
@@ -122,7 +104,7 @@ namespace csASP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ZawartoscExists(zawartosc.idczekoladki))
+                    if (!ZawartoscExists(zawartosc.idzawartosci))
                     {
                         return NotFound();
                     }
@@ -137,18 +119,15 @@ namespace csASP.Controllers
         }
 
         // GET: Zawartosc/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Zawartosc == null)
             {
                 return NotFound();
             }
 
             var zawartosc = await _context.Zawartosc
-                .FirstOrDefaultAsync(m => m.idczekoladki == id);
+                .FirstOrDefaultAsync(m => m.idzawartosci == id);
             if (zawartosc == null)
             {
                 return NotFound();
@@ -160,11 +139,8 @@ namespace csASP.Controllers
         // POST: Zawartosc/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (_context.Zawartosc == null)
             {
                 return Problem("Entity set 'BazaContext.Zawartosc'  is null.");
@@ -179,9 +155,9 @@ namespace csASP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ZawartoscExists(string id)
+        private bool ZawartoscExists(int id)
         {
-          return (_context.Zawartosc?.Any(e => e.idczekoladki == id)).GetValueOrDefault();
+          return (_context.Zawartosc?.Any(e => e.idzawartosci == id)).GetValueOrDefault();
         }
     }
 }

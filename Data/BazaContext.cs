@@ -25,10 +25,5 @@ namespace csASP.Data
         public DbSet<MvcPracownik.Models.Artykul> Artykul { get; set; } = default!;
 
         public DbSet<MvcPracownik.Models.Zamowienie> Zamowienie { get; set; } = default!;
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder){
-            modelBuilder.Entity<Artykul>().HasKey(a => new {a.idzamowienia, a.idpudelka});
-            modelBuilder.Entity<Zawartosc>().HasKey(z => new {z.idpudelka, z.idczekoladki});
-        }
     }
 }

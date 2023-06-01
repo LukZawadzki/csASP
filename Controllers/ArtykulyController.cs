@@ -22,27 +22,21 @@ namespace csASP.Controllers
         // GET: Artykuly
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-            
-            return _context.Artykul != null ? 
-                        View(await _context.Artykul.ToListAsync()) :
-                        Problem("Entity set 'BazaContext.Artykul'  is null.");
+              return _context.Artykul != null ? 
+                          View(await _context.Artykul.ToListAsync()) :
+                          Problem("Entity set 'BazaContext.Artykul'  is null.");
         }
 
         // GET: Artykuly/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Artykul == null)
             {
                 return NotFound();
             }
 
             var artykul = await _context.Artykul
-                .FirstOrDefaultAsync(m => m.idpudelka == id);
+                .FirstOrDefaultAsync(m => m.idartykulu == id);
             if (artykul == null)
             {
                 return NotFound();
@@ -54,9 +48,6 @@ namespace csASP.Controllers
         // GET: Artykuly/Create
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             return View();
         }
 
@@ -65,11 +56,8 @@ namespace csASP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("sztuk,idzamowienia,idpudelka")] Artykul artykul)
+        public async Task<IActionResult> Create([Bind("idartykulu,sztuk,idzamowienia,idpudelka")] Artykul artykul)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (ModelState.IsValid)
             {
                 _context.Add(artykul);
@@ -80,11 +68,8 @@ namespace csASP.Controllers
         }
 
         // GET: Artykuly/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-            
             if (id == null || _context.Artykul == null)
             {
                 return NotFound();
@@ -103,12 +88,9 @@ namespace csASP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("sztuk,idzamowienia,idpudelka")] Artykul artykul)
+        public async Task<IActionResult> Edit(int id, [Bind("idartykulu,sztuk,idzamowienia,idpudelka")] Artykul artykul)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-            
-            if (id != artykul.idpudelka)
+            if (id != artykul.idartykulu)
             {
                 return NotFound();
             }
@@ -122,7 +104,7 @@ namespace csASP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArtykulExists(artykul.idpudelka))
+                    if (!ArtykulExists(artykul.idartykulu))
                     {
                         return NotFound();
                     }
@@ -137,18 +119,15 @@ namespace csASP.Controllers
         }
 
         // GET: Artykuly/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-
             if (id == null || _context.Artykul == null)
             {
                 return NotFound();
             }
 
             var artykul = await _context.Artykul
-                .FirstOrDefaultAsync(m => m.idpudelka == id);
+                .FirstOrDefaultAsync(m => m.idartykulu == id);
             if (artykul == null)
             {
                 return NotFound();
@@ -160,11 +139,8 @@ namespace csASP.Controllers
         // POST: Artykuly/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
-                return RedirectToAction(actionName: "Index", controllerName: "Login");
-            
             if (_context.Artykul == null)
             {
                 return Problem("Entity set 'BazaContext.Artykul'  is null.");
@@ -179,9 +155,9 @@ namespace csASP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ArtykulExists(string id)
+        private bool ArtykulExists(int id)
         {
-          return (_context.Artykul?.Any(e => e.idpudelka == id)).GetValueOrDefault();
+          return (_context.Artykul?.Any(e => e.idartykulu == id)).GetValueOrDefault();
         }
     }
 }

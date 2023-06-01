@@ -5,7 +5,9 @@ namespace MvcPracownik.Models
 {
     [Table("zawartosc")]
     public class Zawartosc
-    {
+    {   
+        [Key]
+        public int idzawartosci {get; set;}
         [Display(Name = "sztuk")]
         public int sztuk {get; set;}
         [ForeignKey("pudelka")]
