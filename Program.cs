@@ -41,9 +41,7 @@ void InitDatabase() {
                 break;
             }
         }
-
-        Console.WriteLine(hasData);
-
+        
         if (hasData)
             return;
         

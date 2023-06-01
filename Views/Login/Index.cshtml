@@ -1,3 +1,7 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
 <div class="d-flex flex-column justify-content-center align-items-center">
     @if (Context.Session.GetString("USER_STATUS") == "LOGGED_IN") {
         <p>Welcome @Context.Session.GetString("LOGGED_USER_USERNAME")!</p>
@@ -8,9 +12,13 @@
         </form>
     } else {
         @if (Context.Session.GetString("USER_STATUS") == "INVALID_CREDENTIALS") {
-            <p>Invalid login or password!</p>
+            <div class="alert alert-danger" role="alert">
+                Invalid login or password!
+            </div>
         } else if (Context.Session.GetString("USER_STATUS") == "REGISTERED") {
-            <p>Thank you for registering!</p>
+            <div class="alert alert-success" role="alert">
+                Successfully registered!
+            </div>
         }
         <form asp-action="HandleLoginForm">
             <label for="username">Username</label>
