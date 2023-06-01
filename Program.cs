@@ -57,6 +57,36 @@ void InitDatabase() {
 
 InitDatabase();
 
+void InitCukiernia(){
+    var connectionBuilder = new SqliteConnectionStringBuilder();
+    connectionBuilder.DataSource = "Cukiernia.db";
+
+    var connection = new SqliteConnection(connectionBuilder.ConnectionString);
+    connection.Open();
+
+    SqliteCommand selectCmd = connection.CreateCommand();
+    selectCmd.CommandText = "SELECT * FROM klienci";
+
+    bool hasData = false;
+    using (SqliteDataReader reader = selectCmd.ExecuteReader()) {
+        while (reader.Read()) {
+            hasData = true;
+            break;
+        }
+    }
+
+    Console.WriteLine(hasData);
+    if (hasData) return;
+    
+    SqliteCommand insertCmd = connection.CreateCommand();
+    insertCmd.CommandText = File.ReadAllText("cukiernia.sql");
+    insertCmd.ExecuteNonQuery();
+
+    connection.Close();
+}
+
+InitCukiernia();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
