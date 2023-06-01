@@ -1,0 +1,9 @@
+dotnet aspnet-codegenerator controller -name PudelkaController -m Pudelko -dc csASP.Data.BazaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -sqlite -f
+dotnet aspnet-codegenerator controller -name ZawartoscController -m Zawartosc -dc csASP.Data.BazaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -sqlite -f
+dotnet aspnet-codegenerator controller -name ArtykulyController -m Artykul -dc csASP.Data.BazaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -sqlite -f  
+dotnet aspnet-codegenerator controller -name CzekoladkaController -m Czekoladka -dc csASP.Data.BazaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -sqlite -f
+dotnet aspnet-codegenerator controller -name ZamowieniaController -m Zamowienie -dc csASP.Data.BazaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -sqlite -f
+dotnet aspnet-codegenerator controller -name KlientController -m Klient -dc csASP.Data.BazaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -sqlite -f 
+
+dotnet ef migrations add REDO
+dotnet ef database update
