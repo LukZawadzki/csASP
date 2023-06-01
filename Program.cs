@@ -1,8 +1,13 @@
 using Microsoft.Data.Sqlite;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using csASP.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BazaContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("BazaContext") ?? throw new InvalidOperationException("Connection string 'BazaContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
