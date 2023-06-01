@@ -108,7 +108,7 @@ namespace csASP.Controllers
             if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
                 return RedirectToAction(actionName: "Index", controllerName: "Login");
 
-            if (id != zawartosc.idczekoladki)
+            if (id != zawartosc.idzawartosci)
             {
                 return NotFound();
             }
