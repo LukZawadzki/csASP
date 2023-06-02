@@ -20,11 +20,15 @@ namespace csASP.Controllers
         }
 
         // GET: Czekoladka
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool deleteError = false)
         {
             if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
                 return RedirectToAction(actionName: "Index", controllerName: "Login");
             
+            if(deleteError){
+                ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
+            }
+
             return _context.Czekoladka != null ? 
                         View(await _context.Czekoladka.ToListAsync()) :
                         Problem("Entity set 'BazaContext.Czekoladka'  is null.");
@@ -156,8 +160,7 @@ namespace csASP.Controllers
             
             var zawartosc = _context.Zawartosc.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
             if(zawartosc){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index), new {deleteError = true});
             }
 
             return View(czekoladka);
@@ -183,8 +186,7 @@ namespace csASP.Controllers
             
             var zawartosc = _context.Zawartosc.Any(z => z.idczekoladki.Equals(czekoladka.idczekoladki));
             if(zawartosc){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć czekoladki, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index), new {deleteError = true});
             }
 
             await _context.SaveChangesAsync();

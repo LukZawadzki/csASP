@@ -20,10 +20,14 @@ namespace csASP.Controllers
         }
 
         // GET: Klient
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool deleteError = false)
         {
             if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
                 return RedirectToAction(actionName: "Index", controllerName: "Login");
+
+            if(deleteError){
+                ModelState.AddModelError(string.Empty, "Nie można usunąć klienta, ponieważ istnieją powiązane dane.");
+            }
 
             return _context.Klient != null ? 
                         View(await _context.Klient.ToListAsync()) :
@@ -186,8 +190,7 @@ namespace csASP.Controllers
 
             var zamowienia = _context.Zamowienie.Any(z => z.idklienta == klient.idklienta);
             if(zamowienia){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć klienta, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index), new {deleteError = true});
             }
 
             return View(klient);
@@ -213,8 +216,7 @@ namespace csASP.Controllers
             
             var zamowienia = _context.Zamowienie.Any(z => z.idklienta == klient.idklienta);
             if(zamowienia){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć klienta, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index), new {deleteError = true});
             }
 
             await _context.SaveChangesAsync();
