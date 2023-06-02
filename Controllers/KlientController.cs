@@ -51,6 +51,36 @@ namespace csASP.Controllers
             return View(klient);
         }
 
+        // GET: Klient/OrderedChocolates/5
+        public async Task<IActionResult> OrderedChocolates(int? id)
+        {
+            if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
+                return RedirectToAction(actionName: "Index", controllerName: "Login");
+
+            if (id == null || _context.Klient == null)
+            {
+                return NotFound();
+            }
+
+            var query = from c in _context.Czekoladka
+                        join za in _context.Zawartosc on c.idczekoladki equals za.idczekoladki
+                        join p in _context.Pudelko on za.idpudelka equals p.idpudelka
+                        join a in _context.Artykul on p.idpudelka equals a.idpudelka
+                        join z in _context.Zamowienie on a.idzamowienia equals z.idzamowienia
+                        where z.idklienta == id
+                        group new {c, za, a} by c.nazwa into g
+                        select new NameCountObject
+                        {
+                            Name = g.Key,
+                            Count = g.Sum(x => x.za.sztuk * x.a.sztuk)
+                        };
+
+            var result = await query.OrderBy(x => -x.Count).ToListAsync();
+
+            ViewData["data"] = result;
+            return View();
+        }
+
         // GET: Klient/Create
         public IActionResult Create()
         {

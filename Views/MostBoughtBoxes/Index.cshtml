@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Most ordered boxes";
+}
+
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <table>
+        <tr>
+            <th>Box name</th>
+            <th>Amount ordered</th>
+        </tr>
+        @foreach(NameCountObject c in ViewData["data"] as List<NameCountObject>) {
+            <tr>
+                <td>@c.Name</td>
+                <td>@c.Count</td>
+            </tr>
+        }
+    </table>
+</div>
