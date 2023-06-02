@@ -20,10 +20,15 @@ namespace csASP.Controllers
         }
 
         // GET: Pudelka
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool deleteError = false)
         {
             if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
                 return RedirectToAction(actionName: "Index", controllerName: "Login");
+
+            if (deleteError)
+            {
+                ModelState.AddModelError(string.Empty, "Nie można usunąć pudełka, ponieważ istnieją powiązane dane.");
+            }
 
             return _context.Pudelko != null ? 
                         View(await _context.Pudelko.ToListAsync()) :
@@ -138,7 +143,7 @@ namespace csASP.Controllers
 
         // GET: Pudelka/Delete/5
         public async Task<IActionResult> Delete(string id)
-        {
+        {   
             if (HttpContext.Session.GetString("USER_STATUS") != "LOGGED_IN")
                 return RedirectToAction(actionName: "Index", controllerName: "Login");
 
@@ -156,9 +161,10 @@ namespace csASP.Controllers
 
             var artykuly = _context.Artykul.Any(a => a.idpudelka.Equals(pudelko.idpudelka));
             var zawartosci = _context.Zawartosc.Any(z => z.idpudelka.Equals(pudelko.idpudelka));
-            if(artykuly || zawartosci){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć pudełka, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
+
+            if (artykuly || zawartosci)
+            {
+                return RedirectToAction(nameof(Index), new {deleteError = true});
             }
 
             return View(pudelko);
@@ -174,21 +180,25 @@ namespace csASP.Controllers
 
             if (_context.Pudelko == null)
             {
-                return Problem("Entity set 'BazaContext.Pudelko'  is null.");
-            }
-            var pudelko = await _context.Pudelko.FindAsync(id);
-            if (pudelko != null)
-            {
-                _context.Pudelko.Remove(pudelko);
-            }
-            
-            var artykuly = _context.Artykul.Any(a => a.idpudelka.Equals(pudelko.idpudelka));
-            var zawartosci = _context.Zawartosc.Any(z => z.idpudelka.Equals(pudelko.idpudelka));
-            if(artykuly || zawartosci){
-                ModelState.AddModelError(string.Empty, "Nie można usunąć pudełka, ponieważ istnieją powiązane dane.");
-                return RedirectToAction("Index");
+                return Problem("Entity set 'BazaContext.Pudelko' is null.");
             }
 
+            var pudelko = await _context.Pudelko.FindAsync(id);
+
+            if (pudelko == null)
+            {
+                return NotFound();
+            }
+
+            var artykuly = _context.Artykul.Any(a => a.idpudelka.Equals(pudelko.idpudelka));
+            var zawartosci = _context.Zawartosc.Any(z => z.idpudelka.Equals(pudelko.idpudelka));
+
+            if (artykuly || zawartosci)
+            {
+                return RedirectToAction(nameof(Index), new { deleteError = true });
+            }
+
+            _context.Pudelko.Remove(pudelko);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

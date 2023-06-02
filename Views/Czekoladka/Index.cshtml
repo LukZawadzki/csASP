@@ -4,6 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
+@if (!ViewData.ModelState.IsValid)
+{   
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
 <h1>Index</h1>
 
 <p>
