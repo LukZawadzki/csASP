@@ -1,7 +1,7 @@
 <h1> Projekt strony cukierni </h1>
 <h3> Autorzy:
     <li> Karol Wójciak
-    <li> Łukasz Zawadzki </h3><br>
+    <li> Łukasz Zawadzki </h3>
 
 <h1></h1>
 <h2> Opis: </h2>
